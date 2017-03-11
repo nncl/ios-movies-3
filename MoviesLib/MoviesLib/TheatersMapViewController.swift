@@ -45,17 +45,17 @@ class TheatersMapViewController: UIViewController {
             switch CLLocationManager.authorizationStatus() {
             case .authorizedWhenInUse, .authorizedAlways:
                 // Already authorized
-                break
+                monitorUserLocation()
+                
             case .notDetermined:
                 print("Still not authorized")
                 locationManager.requestWhenInUseAuthorization()
-                break
             case .denied:
                 // Not authorized
-                break
+                print("Denied")
             case .restricted:
                 // I.e. doctors usage; when something on the device blocks this location use
-                break
+                print("Restricted")
             default:
                 break
             }
@@ -125,6 +125,11 @@ class TheatersMapViewController: UIViewController {
         // OR this way
         
         mapView.showAnnotations(mapView.annotations, animated: true)
+    }
+    
+    func monitorUserLocation() {
+        locationManager.startUpdatingLocation()
+        // locationManager.stopUpdatingLocation()
     }
 
 }
@@ -222,9 +227,20 @@ extension TheatersMapViewController: CLLocationManagerDelegate {
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             print("Authorized")
+            monitorUserLocation()
         default:
             break
         }
+    }
+    
+    // Every single moment that user location has changed
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        print("User Location", userLocation.location!.speed)
+        
+        let region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 500, 500)
+        
+        // Update user's pin location
+        mapView.setRegion(region, animated: true)
     }
 }
 
