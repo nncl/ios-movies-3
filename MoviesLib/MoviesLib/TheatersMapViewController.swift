@@ -7,15 +7,24 @@
 //
 
 import UIKit
+import MapKit // It already has CoreLocation framework/lib
 
 class TheatersMapViewController: UIViewController {
     
+    // MARK: - Properties
     var elementName: String! // Sabemos qual elemento está na linha que está sendo lida
     var theater: Theater!
     var theaters: [Theater] = []
+    
+    // MARK: - IBOutlets
+    @IBOutlet weak var mapView: MKMapView!
 
+    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mapView.mapType = .standard
+        mapView.delegate = self
 
         // Do any additional setup after loading the view.
         loadXML();
@@ -53,8 +62,42 @@ class TheatersMapViewController: UIViewController {
             
         }
     }
+    
+    func addViewersToMap() {
+        for theater in theaters {
+            // Define where pin is gonna appear on the map: by coordinate
+            let coordinate = CLLocationCoordinate2D(latitude: theater.latitude, longitude: theater.longitude)
+            // Pins == Annotations
+            // let annotation = MKPointAnnotation()
+            let annotation = TheaterAnnotation()
+            annotation.coordinate = coordinate
+            annotation.title = theater.name
+            annotation.subtitle = theater.address
+            mapView.addAnnotation(annotation)
+        }
+        
+        // Set map's zoom - -23.562993, -46.652734
+        
+        // Define region to be shown
+        
+        // EITHER this way
+        
+        /*
+        let region = MKCoordinateRegionMakeWithDistance(
+            CLLocationCoordinate2D(latitude: -23.562993,
+                                   longitude: -46.652734), 1000, 1000)
+        
+        mapView.setRegion(region, animated: true)
+        */
+        
+        // OR this way
+        
+        mapView.showAnnotations(mapView.annotations, animated: true)
+    }
 
 }
+
+// MARK: - XMLParserDelegate
 
 extension TheatersMapViewController: XMLParserDelegate {
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
@@ -100,12 +143,46 @@ extension TheatersMapViewController: XMLParserDelegate {
     }
     
     func parserDidEndDocument(_ parser: XMLParser) {
-        // TODO add to the map
-        print("Total", theaters.count)
+        addViewersToMap()
     }
 }
 
-
+// MARK: - MKMapViewDelegate
+extension TheatersMapViewController: MKMapViewDelegate {
+    
+    // Update Icon's attributes
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        var annotationView: MKAnnotationView!
+        
+        if annotation is MKPinAnnotationView {
+            // Lets reuse like swift usually does
+            
+            annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "TheaterPin") as! MKPinAnnotationView
+            
+            // It's is possible not exists
+            // EITHER update an existing one:
+            
+            if annotationView == nil {
+                annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "TheaterPin")
+                (annotationView as! MKAnnotationView).pinTintColor = .blue
+                (annotationView as! MKAnnotationView).animatesDrop = true
+                (annotationView as! MKAnnotationView).canShowCallout = true // Show box when pin is clicked
+            } else {
+                annotationView?.annotation = annotation
+            }
+        } else if annotation is TheaterAnnotation {
+            annotationView = (annotation as! TheaterAnnotation).getAnnotationView()
+        }
+        
+        
+        // OR creating a custom one
+        
+        
+        return annotationView
+        
+    }
+}
 
 
 
