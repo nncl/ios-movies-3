@@ -16,6 +16,7 @@
 		AC1908221E7422550088BB01 /* TheatersMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1908211E7422550088BB01 /* TheatersMapViewController.swift */; };
 		AC1908271E7427830088BB01 /* Theater.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1908261E7427830088BB01 /* Theater.swift */; };
 		AC1908291E743C960088BB01 /* TheaterAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1908281E743C960088BB01 /* TheaterAnnotation.swift */; };
+		AC19082B1E7481760088BB01 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC19082A1E7481760088BB01 /* WebViewController.swift */; };
 		AC64CE811E70BCAA00FD5EFF /* MoviesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC64CE801E70BCAA00FD5EFF /* MoviesTableViewController.swift */; };
 		AC64CE831E70C8C600FD5EFF /* movies.json in Resources */ = {isa = PBXBuildFile; fileRef = AC64CE821E70C8C600FD5EFF /* movies.json */; };
 		AC64CED51E70C98E00FD5EFF /* arrival-small.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC64CEBB1E70C98E00FD5EFF /* arrival-small.jpg */; };
@@ -60,6 +61,7 @@
 		AC1908211E7422550088BB01 /* TheatersMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TheatersMapViewController.swift; sourceTree = "<group>"; };
 		AC1908261E7427830088BB01 /* Theater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theater.swift; sourceTree = "<group>"; };
 		AC1908281E743C960088BB01 /* TheaterAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TheaterAnnotation.swift; sourceTree = "<group>"; };
+		AC19082A1E7481760088BB01 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		AC64CE801E70BCAA00FD5EFF /* MoviesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesTableViewController.swift; sourceTree = "<group>"; };
 		AC64CE821E70C8C600FD5EFF /* movies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = movies.json; sourceTree = "<group>"; };
 		AC64CEBB1E70C98E00FD5EFF /* arrival-small.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "arrival-small.jpg"; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				AC1908211E7422550088BB01 /* TheatersMapViewController.swift */,
 				AC1908261E7427830088BB01 /* Theater.swift */,
 				AC1908281E743C960088BB01 /* TheaterAnnotation.swift */,
+				AC19082A1E7481760088BB01 /* WebViewController.swift */,
 			);
 			name = Theater;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC64CEF31E70DA9E00FD5EFF /* MovieTableViewCell.swift in Sources */,
+				AC19082B1E7481760088BB01 /* WebViewController.swift in Sources */,
 				AC64CE811E70BCAA00FD5EFF /* MoviesTableViewController.swift in Sources */,
 				AC1908291E743C960088BB01 /* TheaterAnnotation.swift in Sources */,
 				07780D4F1E6D860E00BC3630 /* MovieViewController.swift in Sources */,

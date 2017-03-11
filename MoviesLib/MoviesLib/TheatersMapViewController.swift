@@ -15,6 +15,7 @@ class TheatersMapViewController: UIViewController {
     var elementName: String! // Sabemos qual elemento está na linha que está sendo lida
     var theater: Theater!
     var theaters: [Theater] = []
+    var poiAnnotations: [MKPointAnnotation] = []
     
     // Beacons are not fixed meanwhile the other one is
     lazy var locationManager = CLLocationManager() // lazy cause until it's intanciated it's not initialized
@@ -56,8 +57,6 @@ class TheatersMapViewController: UIViewController {
             case .restricted:
                 // I.e. doctors usage; when something on the device blocks this location use
                 print("Restricted")
-            default:
-                break
             }
         }
     }
@@ -104,7 +103,7 @@ class TheatersMapViewController: UIViewController {
             let annotation = TheaterAnnotation(coordinate: coordinate)
             annotation.coordinate = coordinate
             annotation.title = theater.name
-            annotation.subtitle = theater.address
+            annotation.subtitle = theater.url
             mapView.addAnnotation(annotation)
         }
         
@@ -293,12 +292,14 @@ extension TheatersMapViewController: MKMapViewDelegate {
             getRoute(destination: view.annotation!.coordinate)
             mapView.deselectAnnotation(view.annotation, animated: true)
         } else {
-            
+            let vc = storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+            vc.url = view.annotation!.subtitle!
+            present(vc, animated: true, completion: nil)
         }
     }
 }
 
-// MARK: - CLLocationManager
+// MARK: - CLLocationManagerDelegate
 extension TheatersMapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
@@ -321,7 +322,43 @@ extension TheatersMapViewController: CLLocationManagerDelegate {
     }
 }
 
-
+// MARK: - UISearchBarDelegate
+extension TheatersMapViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request = MKLocalSearchRequest()
+        request.naturalLanguageQuery = searchBar.text
+        // We want near regions, so:
+        request.region = mapView.region // Region where you're looaking at the screen
+        
+        let search = MKLocalSearch(request: request)
+        search.start { (response: MKLocalSearchResponse?, error: Error?) in
+            if error == nil {
+                // Unwrapping our response
+                guard let response = response else {return}
+                
+                DispatchQueue.main.async {
+                    self.mapView.removeAnnotations(self.poiAnnotations)
+                    self.poiAnnotations.removeAll()
+                    
+                    for item in response.mapItems {
+                        let annotation = MKPointAnnotation()
+                        annotation.coordinate = item.placemark.coordinate
+                        annotation.title = item.name
+                        annotation.subtitle = item.phoneNumber
+                        
+                        self.poiAnnotations.append(annotation)
+                    }
+                    
+                    self.mapView.addAnnotations(self.poiAnnotations)
+                    self.mapView.showAnnotations(self.mapView.annotations, animated: true)
+                }
+                
+            }
+            
+            searchBar.resignFirstResponder() // Remove keyboard
+        }
+    }
+}
 
 
 
