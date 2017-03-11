@@ -16,18 +16,50 @@ class TheatersMapViewController: UIViewController {
     var theater: Theater!
     var theaters: [Theater] = []
     
+    // Beacons are not fixed meanwhile the other one is
+    lazy var locationManager = CLLocationManager() // lazy cause until it's intanciated it's not initialized
+    
     // MARK: - IBOutlets
     @IBOutlet weak var mapView: MKMapView!
 
-    // MARK: - Methods
+    // MARK: - Super Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
         mapView.mapType = .standard
         mapView.delegate = self
+        mapView.showsUserLocation = true
 
         // Do any additional setup after loading the view.
+        requestLocation()
         loadXML();
+    }
+    
+    // MARK: - Methods
+    
+    func requestLocation() {
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            
+            switch CLLocationManager.authorizationStatus() {
+            case .authorizedWhenInUse, .authorizedAlways:
+                // Already authorized
+                break
+            case .notDetermined:
+                print("Still not authorized")
+                locationManager.requestWhenInUseAuthorization()
+                break
+            case .denied:
+                // Not authorized
+                break
+            case .restricted:
+                // I.e. doctors usage; when something on the device blocks this location use
+                break
+            default:
+                break
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,7 +101,7 @@ class TheatersMapViewController: UIViewController {
             let coordinate = CLLocationCoordinate2D(latitude: theater.latitude, longitude: theater.longitude)
             // Pins == Annotations
             // let annotation = MKPointAnnotation()
-            let annotation = TheaterAnnotation()
+            let annotation = TheaterAnnotation(coordinate: coordinate)
             annotation.coordinate = coordinate
             annotation.title = theater.name
             annotation.subtitle = theater.address
@@ -165,9 +197,9 @@ extension TheatersMapViewController: MKMapViewDelegate {
             
             if annotationView == nil {
                 annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "TheaterPin")
-                (annotationView as! MKAnnotationView).pinTintColor = .blue
-                (annotationView as! MKAnnotationView).animatesDrop = true
-                (annotationView as! MKAnnotationView).canShowCallout = true // Show box when pin is clicked
+                (annotationView as! MKPinAnnotationView).pinTintColor = .blue
+                (annotationView as! MKPinAnnotationView).animatesDrop = true
+                (annotationView as! MKPinAnnotationView).canShowCallout = true // Show box when pin is clicked
             } else {
                 annotationView?.annotation = annotation
             }
@@ -184,7 +216,17 @@ extension TheatersMapViewController: MKMapViewDelegate {
     }
 }
 
-
+// MARK: - CLLocationManager
+extension TheatersMapViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            print("Authorized")
+        default:
+            break
+        }
+    }
+}
 
 
 
