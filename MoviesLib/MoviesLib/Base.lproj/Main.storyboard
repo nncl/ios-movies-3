@@ -144,7 +144,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qpA-F0-9Zr">
-                                <rect key="frame" x="0.0" y="28" width="320" height="540"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="496"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
@@ -155,13 +155,40 @@
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Item" id="C7o-HW-jFt"/>
+                                    <barButtonItem systemItem="rewind" id="C7o-HW-jFt">
+                                        <connections>
+                                            <action selector="goBack" destination="qpA-F0-9Zr" id="0cH-ig-a2m"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="eaB-6m-db5"/>
+                                    <barButtonItem style="plain" id="vVM-ac-uAz">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WGy-BL-bTH">
+                                            <rect key="frame" x="137" y="7" width="46" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="JS"/>
+                                            <connections>
+                                                <action selector="runJS:" destination="WRV-P8-Fmj" eventType="touchUpInside" id="vGW-do-EOo"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="seQ-Da-MvL"/>
+                                    <barButtonItem systemItem="fastForward" id="dU9-Oi-PR1">
+                                        <connections>
+                                            <action selector="goForward" destination="qpA-F0-9Zr" id="Hh4-XM-vp3"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="DmV-pQ-5so">
+                                <rect key="frame" x="150" y="266" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="load" destination="DmV-pQ-5so" id="uJ7-md-0Wc"/>
                         <outlet property="webView" destination="qpA-F0-9Zr" id="EdX-hB-wld"/>
                     </connections>
                 </viewController>

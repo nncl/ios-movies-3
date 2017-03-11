@@ -13,6 +13,12 @@ class WebViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet weak var webView: UIWebView!
     
+    @IBAction func runJS(_ sender: UIButton) {
+        webView.stringByEvaluatingJavaScript(from: "alert('Hello World')")
+    }
+    
+    @IBOutlet weak var load: UIActivityIndicatorView!
+    
     // MARK: - Variables
     var url: String!
     
@@ -26,3 +32,29 @@ class WebViewController: UIViewController {
     }
 
 }
+
+
+
+extension WebViewController: UIWebViewDelegate {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        
+        // URLs that this webview loads
+        // Requests made by this URL, so we can stop anyone if we want
+        
+        // print(request.url!.absoluteString)
+        
+        if request.url!.absoluteString.range(of: "porn") != nil {
+            return false
+        }
+        
+        return true
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        load.stopAnimating()
+    }
+}
+
+
+
+
