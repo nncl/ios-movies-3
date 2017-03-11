@@ -12,6 +12,7 @@
 		07780D521E6D860E00BC3630 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07780D501E6D860E00BC3630 /* Main.storyboard */; };
 		07780D541E6D860E00BC3630 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07780D531E6D860E00BC3630 /* Assets.xcassets */; };
 		07780D571E6D860E00BC3630 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07780D551E6D860E00BC3630 /* LaunchScreen.storyboard */; };
+		AC1908201E741D520088BB01 /* theaters.xml in Resources */ = {isa = PBXBuildFile; fileRef = AC19081F1E741D520088BB01 /* theaters.xml */; };
 		AC64CE811E70BCAA00FD5EFF /* MoviesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC64CE801E70BCAA00FD5EFF /* MoviesTableViewController.swift */; };
 		AC64CE831E70C8C600FD5EFF /* movies.json in Resources */ = {isa = PBXBuildFile; fileRef = AC64CE821E70C8C600FD5EFF /* movies.json */; };
 		AC64CED51E70C98E00FD5EFF /* arrival-small.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC64CEBB1E70C98E00FD5EFF /* arrival-small.jpg */; };
@@ -52,6 +53,7 @@
 		07780D531E6D860E00BC3630 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		07780D561E6D860E00BC3630 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		07780D581E6D860E00BC3630 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC19081F1E741D520088BB01 /* theaters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = theaters.xml; sourceTree = "<group>"; };
 		AC64CE801E70BCAA00FD5EFF /* MoviesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesTableViewController.swift; sourceTree = "<group>"; };
 		AC64CE821E70C8C600FD5EFF /* movies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = movies.json; sourceTree = "<group>"; };
 		AC64CEBB1E70C98E00FD5EFF /* arrival-small.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "arrival-small.jpg"; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			children = (
 				AC64CEEF1E70C99900FD5EFF /* images */,
 				AC64CE821E70C8C600FD5EFF /* movies.json */,
+				AC19081F1E741D520088BB01 /* theaters.xml */,
 				AC64CEF21E70DA9E00FD5EFF /* MovieTableViewCell.swift */,
 				07780D4C1E6D860E00BC3630 /* AppDelegate.swift */,
 				AC64CEF01E70CA2400FD5EFF /* Movie.swift */,
@@ -241,6 +244,7 @@
 				AC64CEE91E70C98E00FD5EFF /* rogueone-small.jpg in Resources */,
 				AC64CEDC1E70C98E00FD5EFF /* civilwar-wide.jpg in Resources */,
 				AC64CEE01E70C98E00FD5EFF /* doctorstrange-wide.jpg in Resources */,
+				AC1908201E741D520088BB01 /* theaters.xml in Resources */,
 				AC64CEEE1E70C98E00FD5EFF /* sully-wide.jpg in Resources */,
 				AC64CEEB1E70C98E00FD5EFF /* suicidesquad-small.jpg in Resources */,
 				AC64CED91E70C98E00FD5EFF /* batmanvsuperman-small.jpg in Resources */,
