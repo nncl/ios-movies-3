@@ -128,8 +128,52 @@ class TheatersMapViewController: UIViewController {
     }
     
     func monitorUserLocation() {
-        locationManager.startUpdatingLocation()
+        // locationManager.startUpdatingLocation()
         // locationManager.stopUpdatingLocation()
+    }
+    
+    // Traça uma rota
+    func getRoute(destination: CLLocationCoordinate2D) {
+        // MKDirectionsRequest: como eu chego daqui até lá? É essa classe que responde
+        let request = MKDirectionsRequest()
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination))
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: locationManager.location!.coordinate))
+        
+        // Let's ask apple how to get there
+        let directions = MKDirections(request: request)
+        directions.calculate { (response: MKDirectionsResponse?, error: Error?) in
+            if error == nil {
+                // All right
+                guard let response = response else {return}
+                let route = response.routes.first!
+                print("Name", route.name)
+                print("Distance", route.distance)
+                print("Duration", route.expectedTravelTime)
+                
+                for step in route.steps {
+                    print("In \(step.distance) meters, \(step.instructions)")
+                }
+                
+                // Add an overlay with the way into the map
+                // closure, so use self
+                /*
+                self.mapView.add(route.polyline, level: MKOverlayLevel.aboveRoads)
+                self.mapView.showAnnotations(self.mapView.annotations, animated: true)
+                */
+                
+                // Because it's async, it's not executed into the main thread, but
+                // to update element into the map, which is being executed into main thread
+                // we have to execute this async func into the main thread
+                
+                DispatchQueue.main.async {
+                    self.mapView.add(route.polyline, level: MKOverlayLevel.aboveRoads)
+                    self.mapView.showAnnotations(self.mapView.annotations, animated: true)
+                }
+                
+            } else {
+                
+            }
+        }
     }
 
 }
@@ -187,6 +231,19 @@ extension TheatersMapViewController: XMLParserDelegate {
 // MARK: - MKMapViewDelegate
 extension TheatersMapViewController: MKMapViewDelegate {
     
+    // Let's draw the line into our map; Let's define how this is gonna be
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKPolyline {
+            let renderer = MKPolylineRenderer(overlay: overlay)
+            renderer.strokeColor = .red
+            renderer.lineWidth = 9.0
+            
+            return renderer
+        } else {
+            return MKOverlayRenderer(overlay: overlay)
+        }
+    }
+    
     // Update Icon's attributes
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
@@ -210,6 +267,13 @@ extension TheatersMapViewController: MKMapViewDelegate {
             }
         } else if annotation is TheaterAnnotation {
             annotationView = (annotation as! TheaterAnnotation).getAnnotationView()
+            
+            let btLeft = UIButton(frame: CGRect(x:0,y:0, width: 30, height: 30))
+            btLeft.setImage(UIImage(named: "car"), for: .normal)
+            annotationView.leftCalloutAccessoryView = btLeft
+            
+            let btRight = UIButton(type: UIButtonType.detailDisclosure)
+            annotationView.rightCalloutAccessoryView = btRight
         }
         
         
@@ -218,6 +282,19 @@ extension TheatersMapViewController: MKMapViewDelegate {
         
         return annotationView
         
+    }
+    
+    // Verify which button has been clicked
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        if control == view.leftCalloutAccessoryView {
+            print("Getting route")
+            mapView.removeOverlays(mapView.overlays)
+            getRoute(destination: view.annotation!.coordinate)
+            mapView.deselectAnnotation(view.annotation, animated: true)
+        } else {
+            
+        }
     }
 }
 
@@ -237,10 +314,10 @@ extension TheatersMapViewController: CLLocationManagerDelegate {
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         print("User Location", userLocation.location!.speed)
         
-        let region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 500, 500)
+        // let region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 500, 500)
         
         // Update user's pin location
-        mapView.setRegion(region, animated: true)
+        // mapView.setRegion(region, animated: true)
     }
 }
 
