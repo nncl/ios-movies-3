@@ -32,7 +32,7 @@ class TheatersMapViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         requestLocation()
-        loadXML();
+        loadXML()
     }
     
     // MARK: - Methods
